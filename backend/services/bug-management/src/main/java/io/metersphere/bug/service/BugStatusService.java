@@ -15,13 +15,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class BugStatusService {
     @Resource
     private BugMapper bugMapper;

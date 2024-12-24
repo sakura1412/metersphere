@@ -30,6 +30,7 @@ import jakarta.annotation.Resource;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import java.util.stream.Collectors;
  * @author song-cc-rock
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class BugCommonService {
 
 	@Resource
@@ -143,6 +143,7 @@ public class BugCommonService {
 	 * @param projectId 项目ID
 	 * @param bugIds 缺陷ID集合
 	 */
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
 	public void clearAssociateResource(String projectId, List<String> bugIds) {
 		// 清空附件(关联, 本地上传, 富文本)
 		FileAssociationExample example = new FileAssociationExample();
