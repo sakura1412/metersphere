@@ -357,23 +357,6 @@
     }
   }
 
-  async function changeHandler(value: string[]) {
-    selectValue.value = value;
-    innerPlanId.value = value[value.length - 1];
-    innerProjectIds.value = [value[0]];
-    const planLevel = 3;
-    if (value.length === planLevel) {
-      innerGroupPlanId.value = value[value.length - 2];
-    } else {
-      innerGroupPlanId.value = '';
-    }
-
-    await nextTick();
-    labelPath.value = getLabelPath(innerPlanId.value);
-    initOverViewDetail();
-    emit('change');
-  }
-
   async function loadMore(option: CascaderOption, done: (children?: CascaderOption[]) => void) {
     try {
       let testPlanOptionsNode = await getWorkTestPlanListUrl(option.value as string);
@@ -417,6 +400,22 @@
       createCustomTooltip(chartDom);
       bindDataZoomEvent(chartRef, options);
     }
+  }
+
+  async function changeHandler(value: string[]) {
+    selectValue.value = value;
+
+    innerPlanId.value = value[value.length - 1];
+    const [newProjectId] = value;
+    innerProjectIds.value = [newProjectId];
+
+    const planLevel = 3;
+    innerGroupPlanId.value = value.length === planLevel ? value[planLevel - 2] : '';
+
+    await nextTick();
+    refreshHandler(newProjectId);
+    labelPath.value = getLabelPath(innerPlanId.value);
+    emit('change');
   }
 
   function getSelectedParams() {
